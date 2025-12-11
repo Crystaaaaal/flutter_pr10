@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
 import '../../store/expense_store.dart';
-
+import '../../store/category_store.dart';
+import '../../di/service_locator.dart';
 
 class ExpenseListScreen extends StatelessWidget {
   final ExpenseStore store;
@@ -11,9 +12,12 @@ class ExpenseListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categoryStore = getIt<CategoryStore>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Расходы'),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
@@ -23,11 +27,6 @@ class ExpenseListScreen extends StatelessWidget {
             icon: const Icon(Icons.add),
             tooltip: 'Добавить расход',
             onPressed: () => context.push('/add-expense'),
-          ),
-          IconButton(
-            icon: const Icon(Icons.swap_horiz),
-            tooltip: 'Перейти к пополнениям',
-            onPressed: () => context.push('/incomes'),
           ),
         ],
       ),
@@ -40,21 +39,42 @@ class ExpenseListScreen extends StatelessWidget {
             itemCount: store.expenses.length,
             itemBuilder: (context, i) {
               final tx = store.expenses[i];
+              final category = categoryStore.getCategoryById(tx.categoryId);
+
               return Card(
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 child: ListTile(
-                  leading: CircleAvatar(backgroundImage: NetworkImage(tx.imageUrl)),
+                  leading: CircleAvatar(
+                    backgroundColor: category?.color.withOpacity(0.1) ?? Colors.grey[200],
+                    child: Icon(
+                      category?.icon ?? Icons.shopping_cart,
+                      color: category?.color ?? Colors.red,
+                    ),
+                  ),
                   title: Text(tx.title),
-                  subtitle: Text(tx.source),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(tx.source),
+                      if (category != null)
+                        Text(
+                          category.name,
+                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                    ],
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         '-${tx.amount.toStringAsFixed(2)} ₽',
-                        style: const TextStyle(color: Colors.red),
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                        icon: const Icon(Icons.delete_outline, color: Colors.red),
                         onPressed: () => store.removeExpense(tx),
                       ),
                     ],

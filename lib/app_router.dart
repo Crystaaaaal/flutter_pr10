@@ -1,4 +1,8 @@
 import 'package:go_router/go_router.dart';
+import 'package:pr7_2/screens/categories/categories_screen.dart';
+import 'package:pr7_2/screens/categories/category_edit_screen.dart';
+import 'package:pr7_2/store/category_store.dart';
+import 'models/category.dart';
 import 'screens/info/info_screen.dart';
 import 'screens/transactions/income_list_screen.dart';
 import 'screens/transactions/expense_list_screen.dart';
@@ -50,6 +54,21 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => ProfileScreen(userStore: getIt()),
+    ),
+    GoRoute(
+      path: '/categories',
+      builder: (context, state) => CategoriesScreen(categoryStore: getIt<CategoryStore>()),
+    ),
+    GoRoute(
+      path: '/categories/add',
+      builder: (context, state) => CategoryEditScreen(categoryStore: getIt<CategoryStore>()),
+    ),
+    GoRoute(
+      path: '/categories/edit',
+      builder: (context, state) => CategoryEditScreen(
+        categoryStore: getIt<CategoryStore>(),
+        category: state.extra as Category,
+      ),
     ),
   ],
 );

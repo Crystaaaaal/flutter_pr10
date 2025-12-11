@@ -6,6 +6,7 @@ class Transaction {
   final String source;
   final bool isIncome;
   final String imageUrl;
+  final String categoryId; // Добавляем ID категории
 
   Transaction({
     required this.amount,
@@ -13,6 +14,7 @@ class Transaction {
     required this.source,
     required this.isIncome,
     required this.imageUrl,
+    required this.categoryId, // Обязательное поле
   });
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class Transaction {
       'source': source,
       'isIncome': isIncome,
       'imageUrl': imageUrl,
+      'categoryId': categoryId, // Добавляем в JSON
     };
   }
 
@@ -32,6 +35,7 @@ class Transaction {
       source: json['source'] as String,
       isIncome: json['isIncome'] as bool,
       imageUrl: json['imageUrl'] as String,
+      categoryId: json['categoryId'] as String, // Извлекаем из JSON
     );
   }
 
@@ -44,7 +48,8 @@ class Transaction {
               title == other.title &&
               source == other.source &&
               isIncome == other.isIncome &&
-              imageUrl == other.imageUrl;
+              imageUrl == other.imageUrl &&
+              categoryId == other.categoryId;
 
   @override
   int get hashCode =>
@@ -52,5 +57,6 @@ class Transaction {
       title.hashCode ^
       source.hashCode ^
       isIncome.hashCode ^
-      imageUrl.hashCode;
+      imageUrl.hashCode ^
+      categoryId.hashCode;
 }

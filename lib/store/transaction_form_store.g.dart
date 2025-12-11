@@ -99,6 +99,24 @@ mixin _$TransactionFormStore on _TransactionFormStore, Store {
     });
   }
 
+  late final _$categoryIdAtom = Atom(
+    name: '_TransactionFormStore.categoryId',
+    context: context,
+  );
+
+  @override
+  String get categoryId {
+    _$categoryIdAtom.reportRead();
+    return super.categoryId;
+  }
+
+  @override
+  set categoryId(String value) {
+    _$categoryIdAtom.reportWrite(value, super.categoryId, () {
+      super.categoryId = value;
+    });
+  }
+
   late final _$_TransactionFormStoreActionController = ActionController(
     name: '_TransactionFormStore',
     context: context,
@@ -165,13 +183,26 @@ mixin _$TransactionFormStore on _TransactionFormStore, Store {
   }
 
   @override
+  void updateCategoryId(String value) {
+    final _$actionInfo = _$_TransactionFormStoreActionController.startAction(
+      name: '_TransactionFormStore.updateCategoryId',
+    );
+    try {
+      return super.updateCategoryId(value);
+    } finally {
+      _$_TransactionFormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 title: ${title},
 source: ${source},
 amount: ${amount},
 imageUrl: ${imageUrl},
-isIncome: ${isIncome}
+isIncome: ${isIncome},
+categoryId: ${categoryId}
     ''';
   }
 }

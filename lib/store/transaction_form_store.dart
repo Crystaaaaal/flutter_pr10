@@ -21,6 +21,9 @@ abstract class _TransactionFormStore with Store {
   @observable
   bool isIncome = true;
 
+  @observable
+  String categoryId = ''; // Добавляем поле для ID категории
+
   @action
   void updateTitle(String value) => title = value;
 
@@ -36,6 +39,9 @@ abstract class _TransactionFormStore with Store {
   @action
   void updateIsIncome(bool value) => isIncome = value;
 
+  @action
+  void updateCategoryId(String value) => categoryId = value; // Добавляем action для обновления категории
+
   Transaction createTransaction() {
     return Transaction(
       title: title,
@@ -43,6 +49,7 @@ abstract class _TransactionFormStore with Store {
       amount: amount,
       imageUrl: imageUrl.isNotEmpty ? imageUrl : 'https://via.placeholder.com/100',
       isIncome: isIncome,
+      categoryId: categoryId, // Добавляем categoryId
     );
   }
 }
