@@ -37,7 +37,6 @@ abstract class _CategoryStore with Store {
       color: Colors.green,
       isExpense: false,
     ),
-    // ... другие предустановленные категории
   ]);
 
   @action

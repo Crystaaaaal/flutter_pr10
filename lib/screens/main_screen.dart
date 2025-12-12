@@ -41,11 +41,27 @@ class ExpenseMainScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                onPressed: () => context.push('/receipts'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child: const Text('Квитанции'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
                 onPressed: () => context.push('/categories'),
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50),
                 ),
                 child: const Text('Категории'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => context.push('/statistics'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child: const Text('Статистика'),
               ),
               const SizedBox(height: 20),
               ElevatedButton(

@@ -5,7 +5,7 @@ class Category {
   final String name;
   final IconData icon;
   final Color color;
-  final bool isExpense; // true для расходов, false для доходов
+  final bool isExpense;
 
   Category({
     required this.id,

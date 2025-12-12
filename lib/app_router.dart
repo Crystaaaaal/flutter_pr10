@@ -1,6 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:pr7_2/screens/categories/categories_screen.dart';
 import 'package:pr7_2/screens/categories/category_edit_screen.dart';
+import 'package:pr7_2/screens/reciept/receipt_add_screen.dart';
+import 'package:pr7_2/screens/reciept/reciept_list_screen.dart';
+import 'package:pr7_2/screens/statistic/statistics_screen.dart';
 import 'package:pr7_2/store/category_store.dart';
 import 'models/category.dart';
 import 'screens/info/info_screen.dart';
@@ -69,6 +72,18 @@ final appRouter = GoRouter(
         categoryStore: getIt<CategoryStore>(),
         category: state.extra as Category,
       ),
+    ),
+    GoRoute(
+      path: '/statistics',
+      builder: (context, state) => const StatisticsScreen(),
+    ),
+    GoRoute(
+      path: '/receipts',
+      builder: (context, state) => const ReceiptListScreen(),
+    ),
+    GoRoute(
+      path: '/receipts/add',
+      builder: (context, state) => const ReceiptAddScreen(),
     ),
   ],
 );

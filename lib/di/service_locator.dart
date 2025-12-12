@@ -3,6 +3,7 @@ import 'package:pr7_2/store/category_store.dart';
 import '../store/income_store.dart';
 import '../store/expense_store.dart';
 import '../store/balance_store.dart';
+import '../store/receipt_store.dart';
 import '../store/transaction_form_store.dart';
 import '../models/transaction.dart';
 import '../store/user_store.dart';
@@ -14,20 +15,47 @@ void setupServiceLocator() {
   getIt.registerSingleton<IncomeStore>(IncomeStore());
   getIt.registerSingleton<ExpenseStore>(ExpenseStore());
   getIt.registerSingleton<CategoryStore>(CategoryStore());
+  getIt.registerSingleton<ReceiptStore>(ReceiptStore());
   getIt.registerSingleton<BalanceStore>(
     BalanceStore(getIt<IncomeStore>(), getIt<ExpenseStore>()),
   );
   getIt.registerSingleton<TransactionFormStore>(TransactionFormStore());
 
-  // Инициализируем дефолтные категории
   getIt<CategoryStore>().initializeDefaultCategories();
 }
 
 void loadInitialData() {
   final incomeStore = getIt<IncomeStore>();
   final expenseStore = getIt<ExpenseStore>();
+  final categoryStore = getIt<CategoryStore>();
 
-  // Создаем начальные транзакции с categoryId
+
+  final foodCategory = categoryStore.categories.firstWhere(
+        (c) => c.name == 'Еда',
+    orElse: () => categoryStore.categories.first,
+  );
+
+  final transportCategory = categoryStore.categories.firstWhere(
+        (c) => c.name == 'Транспорт',
+    orElse: () => categoryStore.categories.first,
+  );
+
+  final salaryCategory = categoryStore.categories.firstWhere(
+        (c) => c.name == 'Зарплата',
+    orElse: () => categoryStore.categories.firstWhere(
+          (c) => c.isExpense == false,
+      orElse: () => categoryStore.categories.first,
+    ),
+  );
+
+  final freelanceCategory = categoryStore.categories.firstWhere(
+        (c) => c.name == 'Фриланс',
+    orElse: () => categoryStore.categories.firstWhere(
+          (c) => c.isExpense == false,
+      orElse: () => categoryStore.categories.first,
+    ),
+  );
+
   final initialExpenses = [
     Transaction(
       amount: 1200,
@@ -35,7 +63,7 @@ void loadInitialData() {
       source: 'Покупка еды в супермаркете',
       isIncome: false,
       imageUrl: 'https://images.thevoicemag.ru/upload/img_cache/493/493173ba9d947eb9624440f06237437e_cropped_666x444.jpg',
-      categoryId: 'expense_food', // ID дефолтной категории для еды
+      categoryId: foodCategory.id,
     ),
     Transaction(
       amount: 350,
@@ -43,7 +71,7 @@ void loadInitialData() {
       source: 'Проезд на автобусе',
       isIncome: false,
       imageUrl: 'https://www.shutterstock.com/image-vector/transport-travel-car-train-bus-600w-506212144.jpg',
-      categoryId: 'expense_transport', // ID дефолтной категории для транспорта
+      categoryId: transportCategory.id,
     ),
   ];
 
@@ -54,7 +82,7 @@ void loadInitialData() {
       source: 'Основная работа',
       isIncome: true,
       imageUrl: 'https://img.gazeta.ru/files3/705/16249705/vkonvertr-pic_32ratio_1200x800-1200x800-79503.jpg',
-      categoryId: 'income_salary', // ID дефолтной категории для зарплаты
+      categoryId: salaryCategory.id,
     ),
     Transaction(
       amount: 7000,
@@ -62,7 +90,7 @@ void loadInitialData() {
       source: 'Проект по дизайну',
       isIncome: true,
       imageUrl: 'https://cdn-icons-png.flaticon.com/512/1807/1807705.png',
-      categoryId: 'income_freelance', // ID дефолтной категории для фриланса
+      categoryId: freelanceCategory.id,
     ),
   ];
 

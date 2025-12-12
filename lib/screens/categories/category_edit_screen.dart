@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '/models/category.dart';
@@ -6,7 +5,7 @@ import '../../store/category_store.dart';
 
 class CategoryEditScreen extends StatefulWidget {
   final CategoryStore categoryStore;
-  final Category? category; // если null, то добавление, иначе редактирование
+  final Category? category;
 
   const CategoryEditScreen({
     Key? key,
@@ -24,7 +23,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
   IconData _selectedIcon = Icons.category;
   Color _selectedColor = Colors.blue;
 
-  // Предопределенные иконки и цвета для выбора
+
   final List<IconData> _icons = [
     Icons.restaurant,
     Icons.directions_car,

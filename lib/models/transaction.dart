@@ -6,7 +6,8 @@ class Transaction {
   final String source;
   final bool isIncome;
   final String imageUrl;
-  final String categoryId; // Добавляем ID категории
+  final String categoryId;
+  final DateTime createdAt; // Добавляем дату создания
 
   Transaction({
     required this.amount,
@@ -14,8 +15,9 @@ class Transaction {
     required this.source,
     required this.isIncome,
     required this.imageUrl,
-    required this.categoryId, // Обязательное поле
-  });
+    required this.categoryId,
+    DateTime? createdAt, // Делаем необязательным, по умолчанию будет текущее время
+  }) : createdAt = createdAt ?? DateTime.now();
 
   Map<String, dynamic> toJson() {
     return {
@@ -24,7 +26,8 @@ class Transaction {
       'source': source,
       'isIncome': isIncome,
       'imageUrl': imageUrl,
-      'categoryId': categoryId, // Добавляем в JSON
+      'categoryId': categoryId,
+      'createdAt': createdAt.toIso8601String(), // Сохраняем дату
     };
   }
 
@@ -35,7 +38,10 @@ class Transaction {
       source: json['source'] as String,
       isIncome: json['isIncome'] as bool,
       imageUrl: json['imageUrl'] as String,
-      categoryId: json['categoryId'] as String, // Извлекаем из JSON
+      categoryId: json['categoryId'] as String,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : DateTime.now(), // Если нет даты, используем текущую
     );
   }
 
